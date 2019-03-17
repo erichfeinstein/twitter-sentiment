@@ -16,10 +16,15 @@ var Twit = require('twit');
 const auth = require('./auth.json');
 const T = new Twit(auth);
 
-const newYork = [-74.01, 40.704, -73.936, 40.817];
-var stream = T.stream('statuses/filter', { locations: newYork });
+const newYork = [-74.02, 40.7, -73.9, 40.85];
+const sanFrancisco = [-122.5, 37.3, -122, 37.82];
+const boston = [-71.12, 42.27, -70.96, 42.39];
+var stream = T.stream('statuses/filter', {
+  locations: sanFrancisco,
+  boston,
+});
 
-//Move to client side
+//Move to client  side
 let sentimentsMap = {
   veryNeg: 0,
   neg: 0,
@@ -49,6 +54,6 @@ setInterval(() => {
 }, 1000);
 
 app.get('/', (req, res) => {
-  res.json(sentimentsMap);
+  res.json({ sentimentsMap });
 });
 app.listen(port, () => console.log(`App listening on port ${port}!`));
