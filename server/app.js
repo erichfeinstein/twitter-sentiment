@@ -6,6 +6,7 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const path = require('path');
 
 //Sentiment setup
 const Sentiment = require('sentiment');
@@ -16,12 +17,9 @@ var Twit = require('twit');
 const auth = require('./auth.json');
 const T = new Twit(auth);
 
-const newYork = [-74.02, 40.7, -73.9, 40.85];
-const sanFrancisco = [-122.5, 37.3, -122, 37.82];
-const boston = [-71.12, 42.27, -70.96, 42.39];
+const usa = [-122, 27, -61, 47];
 var stream = T.stream('statuses/filter', {
-  locations: sanFrancisco,
-  boston,
+  locations: usa,
 });
 
 //Move to client  side
@@ -53,7 +51,9 @@ setInterval(() => {
   console.log(sentimentsMap);
 }, 1000);
 
-app.get('/', (req, res) => {
-  res.json({ sentimentsMap });
+//Express logic
+app.use(express.static('public'));
+app.get('*', function(req, res) {
+  res.sendfile(path.join(__dirname, '..', '/public/index.html'));
 });
 app.listen(port, () => console.log(`App listening on port ${port}!`));

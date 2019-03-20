@@ -1,2 +1,4 @@
 node_modules
 auth.json
+bundle.js
+bundle.js.map
