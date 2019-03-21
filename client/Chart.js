@@ -1,6 +1,24 @@
 import React from 'react';
 import io from 'socket.io-client';
+import { scaleOrdinal } from 'd3-scale';
+
+//Components
 import { PieChart } from 'react-d3-components';
+
+//D3 color scale
+const domain = [
+  'Overwhelmingly Negative',
+  'Mostly Negative',
+  'Negative',
+  'Positive',
+  'Mostly Positive',
+  'Overwhelmingly Positive',
+];
+const colorScale = scaleOrdinal()
+  .domain(domain)
+  .range(['#ff0000', '#ff9933', '#ffff00', '#66ff66', '#33ccff', '#3366ff']);
+
+console.log(colorScale);
 
 //Socket config
 const IP = 'http://localhost:3000';
@@ -42,13 +60,37 @@ export default class Chart extends React.Component {
       }),
     };
     return (
-      <div>
+      <div align="center">
         <PieChart
+          colorScale={colorScale}
           data={data}
           width={1000}
           height={700}
-          margin={{ top: 10, bottom: 10, left: 100, right: 100 }}
+          margin={{ top: 10, bottom: 10, left: 200, right: 200 }}
         />
+        {domain.map((score, i) => {
+          return (
+            <span
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                margin: 10,
+                marginLeft: 500,
+                marginRight: 500,
+              }}
+              key={i}
+            >
+              <h3 stlye={{}}>{score}</h3>
+              <div
+                style={{
+                  width: 50,
+                  height: 50,
+                  backgroundColor: colorScale(score),
+                }}
+              />
+            </span>
+          );
+        })}
       </div>
     );
   }
