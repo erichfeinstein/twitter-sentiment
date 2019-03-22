@@ -13,6 +13,8 @@ export default class App extends React.Component {
           States in real time
         </p>
         <Chart />
+        <div style={{ height: 30 }} />
+        <p align="center">Created by Eric Feinstein</p>
       </div>
     );
   }

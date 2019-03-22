@@ -13,8 +13,21 @@ const sentiment = new Sentiment();
 
 //Twit setup
 var Twit = require('twit');
-const auth = require('./auth.json');
-const T = new Twit(auth);
+if (!process.env.consumer_key) {
+  var {
+    consumer_key,
+    consumer_secret,
+    access_token,
+    access_token_secret,
+  } = require('./auth.json');
+}
+
+const T = new Twit({
+  consumer_key: process.env.consumer_key || consumer_key,
+  consumer_secret: process.env.consumer_secret || consumer_secret,
+  access_token: process.env.access_token || access_token,
+  access_token_secret: process.env.access_token_secret || access_token_secret,
+});
 
 //Twit stream
 const usa = [-122, 27, -61, 47];

@@ -1,0 +1,13 @@
+body {
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+#color-key {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+@media only screen and (min-width: 1000px) {
+  #color-key {
+    width: 30vw;
+  }
+}

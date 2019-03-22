@@ -21,20 +21,26 @@ const colorScale = scaleOrdinal()
 console.log(colorScale);
 
 //Socket config
-const IP = 'http://localhost:3000';
-//   window.location.hostname === 'localhost'
-//     ? 'http://localhost:3000'
-//     : 'https://twit-viz.herokuapp.com';
+const IP =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : 'https://twit-viz.herokuapp.com';
 
 export default class Chart extends React.Component {
   constructor() {
     super();
     this.state = {
       scores: {},
+      width: 0,
+      height: 0,
     };
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     this.socket = io(IP);
   }
   componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+
     this.socket.on('tweet', score => {
       //Ignore true neutral tweets
       if (score === 0) return;
@@ -52,6 +58,14 @@ export default class Chart extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+
+  updateWindowDimensions() {
+    this.setState({ width: window.innerWidth, height: window.innerHeight });
+  }
+
   render() {
     const data = {
       label: 'Chart',
@@ -64,33 +78,36 @@ export default class Chart extends React.Component {
         <PieChart
           colorScale={colorScale}
           data={data}
-          width={1000}
-          height={700}
-          margin={{ top: 10, bottom: 10, left: 200, right: 200 }}
+          width={this.state.width * 0.8}
+          height={this.state.height * 0.8}
+          hideLabels={this.state.width < 1000}
+          margin={{ top: 10, bottom: 10, left: 10, right: 10 }}
         />
-        {domain.map((score, i) => {
-          return (
-            <span
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                margin: 10,
-                marginLeft: 500,
-                marginRight: 500,
-              }}
-              key={i}
-            >
-              <h3 stlye={{}}>{score}</h3>
-              <div
+        <div id="color-key">
+          {domain.map((score, i) => {
+            return (
+              <span
                 style={{
-                  width: 50,
-                  height: 50,
-                  backgroundColor: colorScale(score),
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  margin: 10,
                 }}
-              />
-            </span>
-          );
-        })}
+                key={i}
+              >
+                <h3>
+                  {this.state.scores[score] || 0}: {score}
+                </h3>
+                <div
+                  style={{
+                    width: 50,
+                    height: 50,
+                    backgroundColor: colorScale(score),
+                  }}
+                />
+              </span>
+            );
+          })}
+        </div>
       </div>
     );
   }
