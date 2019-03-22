@@ -1,7 +1,7 @@
 //Express setup
 const express = require('express');
 const app = express();
-const port = 3000;
+const PORT = 3000;
 const path = require('path');
 
 //Socket.io setup
@@ -50,8 +50,8 @@ app.use(express.static('public'));
 app.get('*', function(req, res) {
   res.sendfile(path.join(__dirname, '..', '/public/index.html'));
 });
-const server = app.listen(port, () =>
-  console.log(`App listening on port ${port}!`)
+const server = app.listen(process.env.PORT || PORT, () =>
+  console.log(`App running!`)
 );
 
 //Socket logic
