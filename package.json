@@ -27,18 +27,14 @@
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0",
     "twit": "^2.2.11",
-    "webpack": "^4.29.6"
-  },
-  "devDependencies": {
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
     "@babel/preset-es2015": "^7.0.0-beta.53",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "nodemon": "^1.14.11",
-    "webpack": "^4.16.1",
-    "webpack-cli": "^3.3.0"
+    "babel-preset-react": "^6.24.1"
   }
 }
